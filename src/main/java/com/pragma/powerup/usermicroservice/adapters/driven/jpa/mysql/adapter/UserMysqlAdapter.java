@@ -11,20 +11,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
 public class UserMysqlAdapter implements IUserPersistencePort {
-    private final IUserRepository personRepository;
+    private final IUserRepository userRepository;
     private final IUserEntityMapper personEntityMapper;
     private final PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUser(User user) {
-        if (personRepository.findByDniNumber(user.getDniNumber()).isPresent()) {
+        checkIfUserExists(user.getDniNumber(), user.getMail());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(personEntityMapper.toEntity(user));
+    }
+
+    private void checkIfUserExists(String dniNumber, String mail) {
+        if (userRepository.findByDniNumber(dniNumber).isPresent()) {
             throw new PersonAlreadyExistsException();
         }
-
-        if (personRepository.existsByMail(user.getMail())){
+        if (userRepository.existsByMail(mail)) {
             throw new MailAlreadyExistsException();
         }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        personRepository.save(personEntityMapper.toEntity(user));
     }
 }

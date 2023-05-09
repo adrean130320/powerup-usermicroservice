@@ -4,4 +4,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Use
 
 public interface IUserHandler {
     void saveUser(UserRequestDto personRequestDto);
+
+    void saveOwner(UserRequestDto userRequestDto);
 }

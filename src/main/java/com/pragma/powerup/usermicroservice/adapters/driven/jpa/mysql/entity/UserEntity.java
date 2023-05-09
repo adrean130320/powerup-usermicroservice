@@ -1,17 +1,12 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -34,6 +29,8 @@ public class UserEntity {
     private String idPersonType;
     private String password;
     private String tokenPassword;
+    @Temporal(TemporalType.DATE) // aquí se indica que solo se debe considerar la parte de fecha
+    private Date birthdate;
     @ManyToOne(optional = true)
     @JoinColumn(name = "id_role")
     private RoleEntity role;
